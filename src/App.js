@@ -26,21 +26,26 @@ const app = new Clarifai.App({
   apiKey: "10ed93b516574f44a5596a6b90375860"
 });
 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
+
 class App extends Component {
 
-  state = {
-    input: '',
-    imageUrl: '',
-    box: {},
-    route: 'signin',
-    isSignedIn: false,
-    user: {
-      id: '',
-      name: '',
-      email: '',
-      entries: 0,
-      joined: ''
-    }
+  constructor() {
+    super();
+    this.state = initialState
   }
 
   loadUser = (data) => {
@@ -78,8 +83,10 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input })
-    app.models.predict(Clarifai.FACE_DETECT_MODEL,
-      this.state.input)
+    app.models
+      .predict(
+        Clarifai.FACE_DETECT_MODEL,
+        this.state.input)
     .then(response => {
       if (response) {
         fetch('http://localhost:3000/image', {
@@ -106,7 +113,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === "signout") {
-      this.setState({ isSignedIn: false })
+      this.setState({initialState})
     } else if (route === "home") {
       this.setState({ isSignedIn: true })
     }
