@@ -1,51 +1,45 @@
-import React from 'react'
+import React from 'react';
 
 class Register extends React.Component {
-
-  state = {
-    email: '',
-    password: '',
-    name: ''
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      name: ''
+    }
   }
 
-  onEmailChange = (e) => {
-    this.setState({
-      email: e.target.value
-    })
+  onNameChange = (event) => {
+    this.setState({name: event.target.value})
   }
 
-  onPasswordChange = (e) => {
-    this.setState({
-      password: e.target.value
-    })
+  onEmailChange = (event) => {
+    this.setState({email: event.target.value})
   }
 
-  onNameChange = (e) => {
-    this.setState({
-      name: e.target.value
-    })
+  onPasswordChange = (event) => {
+    this.setState({password: event.target.value})
   }
 
-  onSubmitRegister = () => {
+  onSubmitSignIn = () => {
     fetch('http://localhost:3000/register', {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        name: this.state.name,
         email: this.state.email,
-        password: this.state.password
+        password: this.state.password,
+        name: this.state.name
       })
     })
-    .then(response => response.json())
-    .then(user => {
-      if (user.id) {
-        console.log(user)
-        this.props.loadUser(user)
-        this.props.onRouteChange('home')
-      }
-    })
+      .then(response => response.json())
+      .then(user => {
+        if (user.id) {
+          this.props.loadUser(user)
+          this.props.onRouteChange('home');
+        }
+      })
   }
-
 
   render() {
     return (
@@ -57,44 +51,47 @@ class Register extends React.Component {
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                 <input
-                  onChange={this.onNameChange}
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  type="email"
-                  name="email-address"
-                  id="name"/>
+                  type="text"
+                  name="name"
+                  id="name"
+                  onChange={this.onNameChange}
+                />
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                 <input
-                  onChange={this.onEmailChange}
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="email"
                   name="email-address"
-                  id="email-address"/>
+                  id="email-address"
+                  onChange={this.onEmailChange}
+                />
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                 <input
-                  onChange={this.onPasswordChange}
                   className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="password"
                   name="password"
-                  id="password"/>
+                  id="password"
+                  onChange={this.onPasswordChange}
+                />
               </div>
             </fieldset>
             <div className="">
               <input
-                onClick={this.onSubmitRegister}
+                onClick={this.onSubmitSignIn}
                 className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                 type="submit"
-                value="Sign Up"/>
+                value="Register"
+              />
             </div>
           </div>
         </main>
       </article>
-    )
+    );
   }
-
 }
 
-export default Register
+export default Register;
